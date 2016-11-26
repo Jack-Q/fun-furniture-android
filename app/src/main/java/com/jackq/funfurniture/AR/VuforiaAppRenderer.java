@@ -108,33 +108,13 @@ public class VuforiaAppRenderer {
         mRenderingPrimitives = Device.getInstance().getRenderingPrimitives();
     }
 
-    void initRendering()
+
+    // region Merged
+
+    public void setNearFarPlanes(float near, float far)
     {
-        vbShaderProgramID = Utilities.createProgramFromShaderSrc(VideoBackgroundShader.VB_VERTEX_SHADER,
-                VideoBackgroundShader.VB_FRAGMENT_SHADER);
-
-        // Rendering configuration for video background
-        if (vbShaderProgramID > 0)
-        {
-            // Activate shader:
-            GLES20.glUseProgram(vbShaderProgramID);
-
-            // Retrieve handler for texture sampler shader uniform variable:
-            vbTexSampler2DHandle = GLES20.glGetUniformLocation(vbShaderProgramID, "texSampler2D");
-
-            // Retrieve handler for projection matrix shader uniform variable:
-            vbProjectionMatrixHandle = GLES20.glGetUniformLocation(vbShaderProgramID, "projectionMatrix");
-
-            vbVertexHandle = GLES20.glGetAttribLocation(vbShaderProgramID, "vertexPosition");
-            vbTexCoordHandle = GLES20.glGetAttribLocation(vbShaderProgramID, "vertexTexCoord");
-            vbProjectionMatrixHandle = GLES20.glGetUniformLocation(vbShaderProgramID, "projectionMatrix");
-            vbTexSampler2DHandle = GLES20.glGetUniformLocation(vbShaderProgramID, "texSampler2D");
-
-            // Stop using the program
-            GLES20.glUseProgram(0);
-        }
-
-        videoBackgroundTex = new GLTextureUnit();
+        mNearPlane = near;
+        mFarPlane = far;
     }
 
     // Main rendering method
@@ -210,10 +190,33 @@ public class VuforiaAppRenderer {
         mRenderer.end();
     }
 
-    public void setNearFarPlanes(float near, float far)
+    private void initRendering()
     {
-        mNearPlane = near;
-        mFarPlane = far;
+        vbShaderProgramID = Utilities.createProgramFromShaderSrc(VideoBackgroundShader.VB_VERTEX_SHADER,
+                VideoBackgroundShader.VB_FRAGMENT_SHADER);
+
+        // Rendering configuration for video background
+        if (vbShaderProgramID > 0)
+        {
+            // Activate shader:
+            GLES20.glUseProgram(vbShaderProgramID);
+
+            // Retrieve handler for texture sampler shader uniform variable:
+            vbTexSampler2DHandle = GLES20.glGetUniformLocation(vbShaderProgramID, "texSampler2D");
+
+            // Retrieve handler for projection matrix shader uniform variable:
+            vbProjectionMatrixHandle = GLES20.glGetUniformLocation(vbShaderProgramID, "projectionMatrix");
+
+            vbVertexHandle = GLES20.glGetAttribLocation(vbShaderProgramID, "vertexPosition");
+            vbTexCoordHandle = GLES20.glGetAttribLocation(vbShaderProgramID, "vertexTexCoord");
+            vbProjectionMatrixHandle = GLES20.glGetUniformLocation(vbShaderProgramID, "projectionMatrix");
+            vbTexSampler2DHandle = GLES20.glGetUniformLocation(vbShaderProgramID, "texSampler2D");
+
+            // Stop using the program
+            GLES20.glUseProgram(0);
+        }
+
+        videoBackgroundTex = new GLTextureUnit();
     }
 
     public void renderVideoBackground()
@@ -272,7 +275,6 @@ public class VuforiaAppRenderer {
 
         Utilities.checkGLError("Rendering of the video background failed");
     }
-
 
     static final float VIRTUAL_FOV_Y_DEGS = 85.0f;
     static final float M_PI = 3.14159f;
@@ -387,4 +389,6 @@ public class VuforiaAppRenderer {
         Log.i(LOGTAG, "Activity is in "
                 + (mIsPortrait ? "PORTRAIT" : "LANDSCAPE"));
     }
+    // endregion
+
 }

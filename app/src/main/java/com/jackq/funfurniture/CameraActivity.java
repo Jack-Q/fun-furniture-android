@@ -45,9 +45,6 @@ public class CameraActivity extends Activity implements IVuforiaApplicationContr
     VuforiaApplicationSession vuforiaAppSession;
 
     private DataSet mCurrentDataset;
-    private int mCurrentDatasetSelectionIndex = 0;
-    private int mStartDatasetsIndex = 0;
-    private int mDatasetsNumber = 0;
 
     // Our OpenGL view:
     private VuforiaApplicationGLView mGlView;
@@ -61,14 +58,9 @@ public class CameraActivity extends Activity implements IVuforiaApplicationContr
     private Vector<VuforiaTexture> mTextures;
 
     private boolean mSwitchDatasetAsap = false;
-    private boolean mFlash = false;
-    private boolean mContAutofocus = false;
     private boolean mExtendedTracking = false;
 
-    private View mFlashOptionView;
-
     private RelativeLayout mUILayout;
-
 
     LoadingDialogHandler loadingDialogHandler = new LoadingDialogHandler(this);
 
@@ -146,14 +138,10 @@ public class CameraActivity extends Activity implements IVuforiaApplicationContr
 
     private void loadTextures()
     {
-//        mTextures.add(VuforiaTexture.loadTextureFromApk("TextureTeapotBrass.png",
-//                getAssets()));
-//        mTextures.add(VuforiaTexture.loadTextureFromApk("TextureTeapotBlue.png",
-//                getAssets()));
-//        mTextures.add(VuforiaTexture.loadTextureFromApk("TextureTeapotRed.png",
-//                getAssets()));
-//        mTextures.add(VuforiaTexture.loadTextureFromApk("ImageTargets/Buildings.jpeg",
-//                getAssets()));
+        mTextures.add(VuforiaTexture.loadTextureFromApk("model-material-01.png",
+                getAssets()));
+        mTextures.add(VuforiaTexture.loadTextureFromApk("model-material-02.jpg",
+                getAssets()));
     }
 
 
@@ -211,19 +199,6 @@ public class CameraActivity extends Activity implements IVuforiaApplicationContr
         {
             mGlView.setVisibility(View.INVISIBLE);
             mGlView.onPause();
-        }
-
-        // Turn off the flash
-        if (mFlashOptionView != null && mFlash)
-        {
-            // OnCheckedChangeListener is called upon changing the checked state
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-            {
-                ((Switch) mFlashOptionView).setChecked(false);
-            } else
-            {
-                ((CheckBox) mFlashOptionView).setChecked(false);
-            }
         }
 
         try
@@ -406,12 +381,6 @@ public class CameraActivity extends Activity implements IVuforiaApplicationContr
             boolean result = CameraDevice.getInstance().setFocusMode(
                     CameraDevice.FOCUS_MODE.FOCUS_MODE_CONTINUOUSAUTO);
 
-            if (result)
-                mContAutofocus = true;
-            else
-                Log.e(LOGTAG, "Unable to enable continuous autofocus");
-
-
         } else
         {
             Log.e(LOGTAG, exception.getString());
@@ -559,20 +528,6 @@ public class CameraActivity extends Activity implements IVuforiaApplicationContr
         return mExtendedTracking;
     }
 
-    final public static int CMD_BACK = -1;
-    final public static int CMD_EXTENDED_TRACKING = 1;
-    final public static int CMD_AUTOFOCUS = 2;
-    final public static int CMD_FLASH = 3;
-    final public static int CMD_CAMERA_FRONT = 4;
-    final public static int CMD_CAMERA_REAR = 5;
-    final public static int CMD_DATASET_START_INDEX = 6;
-
-
-
-    private void showToast(String text)
-    {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-    }
 }
 
 //

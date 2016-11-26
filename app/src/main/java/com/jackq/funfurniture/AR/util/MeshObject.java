@@ -86,7 +86,6 @@ public abstract class MeshObject
 
     public abstract int getNumObjectVertex();
 
-
     public abstract int getNumObjectIndex();
 
 }

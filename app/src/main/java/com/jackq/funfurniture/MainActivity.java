@@ -36,6 +36,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, CameraActivity.class));
             }
         });
+
+        Button btn2 = (Button) this.findViewById(R.id.button_ar_view_launch);
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ARViewActivity.class));
+            }
+        });
+
+
     }
 
     @Override

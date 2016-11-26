@@ -46,7 +46,7 @@ public class VuforiaApplicationSession implements Vuforia.UpdateCallbackInterfac
     // and the Android onDestroy() life cycle event. If the application is
     // destroyed while a data set is still being loaded, then we wait for the
     // loading operation to finish before shutting down Vuforia:
-    private Object mShutdownLock = new Object();
+    private final Object mShutdownLock = new Object();
 
     // Vuforia initialization flags:
     private int mVuforiaFlags = 0;
@@ -197,7 +197,7 @@ public class VuforiaApplicationSession implements Vuforia.UpdateCallbackInterfac
         stopCamera();
 
         // Ensure that all asynchronous operations to initialize Vuforia
-        // and loading the tracker datasets do not overlap:
+        // and loading the tracker data sets do not overlap:
         synchronized (mShutdownLock) {
 
             boolean unloadTrackersResult;
@@ -329,7 +329,7 @@ public class VuforiaApplicationSession implements Vuforia.UpdateCallbackInterfac
             // Done initializing Vuforia, proceed to next application
             // initialization status:
 
-            VuforiaApplicationException vuforiaException = null;
+            VuforiaApplicationException vuforiaException;
 
             if (result) {
                 Log.d(LOGTAG, "InitVuforiaTask.onPostExecute: Vuforia "

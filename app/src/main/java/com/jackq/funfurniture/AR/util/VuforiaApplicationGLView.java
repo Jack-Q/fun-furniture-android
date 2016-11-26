@@ -27,7 +27,7 @@ import javax.microedition.khronos.egl.EGLDisplay;
 // Responsible for setting up and configuring the OpenGL surface view.
 // This class does not contain any Vuforia specific code.
 // You can use your own OpenGL implementation.
-public class VuforiaApplicationGLView extends GLSurfaceView
+public class VuforiaApplicationGLView extends org.rajawali3d.view.SurfaceView
 {
     private static final String LOGTAG = "Vuforia_SampleGLView";
 
