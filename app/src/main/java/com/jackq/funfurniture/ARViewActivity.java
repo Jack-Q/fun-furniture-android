@@ -24,6 +24,9 @@ import com.vuforia.Tracker;
 import com.vuforia.TrackerManager;
 import com.vuforia.Vuforia;
 
+import org.rajawali3d.loader.ALoader;
+import org.rajawali3d.loader.LoaderOBJ;
+import org.rajawali3d.loader.async.IAsyncLoaderCallback;
 import org.rajawali3d.view.SurfaceView;
 
 import javax.microedition.khronos.egl.EGL10;
@@ -52,6 +55,8 @@ public class ARViewActivity extends AppCompatActivity implements IVuforiaApplica
 
         // Start loading Vuforia AR Session
         vuforiaApplicationSession.initAR(this, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+
     }
 
     private void initApplicationAR() {
@@ -87,7 +92,28 @@ public class ARViewActivity extends AppCompatActivity implements IVuforiaApplica
                         : new ConfigChooser(5, 6, 5, 0, depthSize, stencilSize));
 
         arSurfaceView.setSurfaceRenderer(renderer);
+
+        loadObject3D();
     }
+
+    private void loadObject3D(){
+        final LoaderOBJ loaderOBJ = new LoaderOBJ(getResources(), renderer.getTextureManager(), R.raw.model_chair_obj);
+        renderer.loadModel(loaderOBJ, new IAsyncLoaderCallback() {
+            @Override
+            public void onModelLoadComplete(ALoader loader) {
+
+                Log.d(TAG, "Model load complete: " + loader);
+                final LoaderOBJ obj = (LoaderOBJ) loader;
+                renderer.setCurrentObject(obj.getParsedObject());
+            }
+
+            @Override
+            public void onModelLoadFailed(ALoader loader) {
+                Log.e(TAG, "failed to load the content");
+            }
+        }, R.raw.model_chair_obj);
+    }
+
 
     // region Android Activity Lifecycle Control
 

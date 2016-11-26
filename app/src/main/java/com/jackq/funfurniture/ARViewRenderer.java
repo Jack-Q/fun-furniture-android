@@ -16,10 +16,13 @@ import com.vuforia.CameraDevice;
 import com.vuforia.Device;
 import com.vuforia.GLTextureUnit;
 import com.vuforia.Matrix34F;
+import com.vuforia.Matrix44F;
 import com.vuforia.Mesh;
 import com.vuforia.RenderingPrimitives;
 import com.vuforia.State;
 import com.vuforia.Tool;
+import com.vuforia.Trackable;
+import com.vuforia.TrackableResult;
 import com.vuforia.TrackerManager;
 import com.vuforia.VIDEO_BACKGROUND_REFLECTION;
 import com.vuforia.VIEW;
@@ -30,6 +33,8 @@ import com.vuforia.VideoBackgroundConfig;
 import com.vuforia.VideoMode;
 import com.vuforia.ViewList;
 
+import org.rajawali3d.Object3D;
+import org.rajawali3d.math.Matrix4;
 import org.rajawali3d.renderer.Renderer;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -111,6 +116,8 @@ public class ARViewRenderer extends Renderer {
 
     // Stores orientation
     private boolean isPortrait = false;
+
+    private Object3D object3D = null;
 
     public ARViewRenderer(Activity activity, VuforiaApplicationSession session) {
         // construct Rajawali 3D
@@ -262,7 +269,7 @@ public class ARViewRenderer extends Renderer {
                 // 1. Render the background with pixels from camera
                 renderVideoBackground();
                 // 2. Update the object position & perspective based on the update of the physical position
-                // TODO:
+                onUpdateARViewScene(state, projectionMatrix);
                 // mRenderingInterface.renderFrame(state, projectionMatrix);
                 // 3. Render the Rajawali scene with managed position and relations
                 super.onRenderFrame(gl);
@@ -272,6 +279,54 @@ public class ARViewRenderer extends Renderer {
         vuforiaRenderer.end();
 
     }
+
+    public void setCurrentObject(Object3D object3D){
+        if(this.object3D!=null){
+            getCurrentScene().removeChild(this.object3D);
+        }
+        this.object3D = object3D;
+        object3D.setVisible(false);
+        getCurrentScene().addChild(object3D);
+
+    }
+
+    private void onUpdateARViewScene(State state, float[] projectionMatrix) {
+
+
+        // Currently, we only care about single marker, thus only retrieve the first marker
+        if(state.getNumTrackableResults() <= 0){
+            if(this.object3D!=null)
+                this.object3D.setVisible(false);
+            // TODO: Hide ?
+            return;
+        }
+        TrackableResult result = state.getTrackableResult(0);
+        // Trackable trackable = result.getTrackable();
+        // Log.d(TAG, "User data of detected marker: " + trackable.getUserData());
+        Matrix44F modelViewMatrix_Vuforia = Tool.convertPose2GLMatrix(result.getPose());
+        float[] modelViewMatrix = modelViewMatrix_Vuforia.getData();
+
+        // from this interface can we acquire the current marker, thus multiple marker is enabled by default
+        // int textureIndex = trackable.getName().equalsIgnoreCase("stones") ? 0 : 1;
+
+        // deal with the modelview and projection matrices
+        float[] modelViewProjection = new float[16];
+
+        // Translation can also be applied in the similar way
+        Matrix.rotateM(modelViewMatrix, 0, 90.0f, 1.0f, 0, 0);
+        Matrix.scaleM(modelViewMatrix, 0, 2, 2, 2);
+        Matrix.multiplyMM(modelViewProjection, 0, projectionMatrix, 0, modelViewMatrix, 0);
+
+        if(this.object3D != null){
+            // TODO: update object position
+            object3D.setVisible(true);
+            object3D.render(getCurrentCamera(),  new Matrix4(modelViewMatrix), new Matrix4(projectionMatrix), new Matrix4(), null);
+        }
+
+    }
+
+
+
 
     /**
      * Render the Scene
