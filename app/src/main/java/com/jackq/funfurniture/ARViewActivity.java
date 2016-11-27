@@ -96,7 +96,7 @@ public class ARViewActivity extends AppCompatActivity implements IVuforiaApplica
         loadObject3D();
     }
 
-    private void loadObject3D(){
+    private void loadObject3D() {
         final LoaderOBJ loaderOBJ = new LoaderOBJ(getResources(), renderer.getTextureManager(), R.raw.model_chair_obj);
         renderer.loadModel(loaderOBJ, new IAsyncLoaderCallback() {
             @Override
@@ -340,8 +340,7 @@ public class ARViewActivity extends AppCompatActivity implements IVuforiaApplica
 }
 
 // Creates OpenGL contexts.
-class ContextFactory implements
-        GLSurfaceView.EGLContextFactory {
+class ContextFactory implements GLSurfaceView.EGLContextFactory {
     private final static String TAG = "ContextFactoryForARView";
     private final static int EGL_CONTEXT_CLIENT_VERSION = 0x3098;
 
@@ -377,8 +376,7 @@ class ContextFactory implements
 
 
 // The config chooser.
-class ConfigChooser implements
-        GLSurfaceView.EGLConfigChooser {
+class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
     ConfigChooser(int r, int g, int b, int a, int depth, int stencil) {
         mRedSize = r;
         mGreenSize = g;

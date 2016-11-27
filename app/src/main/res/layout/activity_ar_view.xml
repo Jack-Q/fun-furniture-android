@@ -15,4 +15,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </FrameLayout>
+    <TextView
+        android:id="@+id/text_test_surface_output"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Hello Matrix"
+        android:background="#aaffffff" />
 </RelativeLayout>

@@ -2,16 +2,19 @@ package com.jackq.funfurniture;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.os.Build;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.TextView;
 
 import com.jackq.funfurniture.AR.VuforiaApplicationSession;
 import com.jackq.funfurniture.AR.util.Utilities;
 import com.vuforia.COORDINATE_SYSTEM_TYPE;
+import com.vuforia.CameraCalibration;
 import com.vuforia.CameraDevice;
 import com.vuforia.Device;
 import com.vuforia.GLTextureUnit;
@@ -21,7 +24,6 @@ import com.vuforia.Mesh;
 import com.vuforia.RenderingPrimitives;
 import com.vuforia.State;
 import com.vuforia.Tool;
-import com.vuforia.Trackable;
 import com.vuforia.TrackableResult;
 import com.vuforia.TrackerManager;
 import com.vuforia.VIDEO_BACKGROUND_REFLECTION;
@@ -34,8 +36,14 @@ import com.vuforia.VideoMode;
 import com.vuforia.ViewList;
 
 import org.rajawali3d.Object3D;
-import org.rajawali3d.math.Matrix4;
+import org.rajawali3d.debug.CoordinateTrident;
+import org.rajawali3d.debug.GridFloor;
+import org.rajawali3d.lights.DirectionalLight;
+import org.rajawali3d.math.Quaternion;
+import org.rajawali3d.math.vector.Vector3;
 import org.rajawali3d.renderer.Renderer;
+
+import java.util.Locale;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -145,6 +153,7 @@ public class ARViewRenderer extends Renderer {
     protected void initScene() {
         // the buffer will be cleared by Vuforia
         getCurrentScene().alwaysClearColorBuffer(false);
+
     }
 
     /**
@@ -154,6 +163,7 @@ public class ARViewRenderer extends Renderer {
      */
     @Override
     public void onRenderSurfaceSizeChanged(GL10 gl, int width, int height) {
+        super.onRenderSurfaceSizeChanged(gl, width, height);
         Log.d(TAG, "GLRenderer.onSurfaceChanged");
 
         // Call Vuforia function to handle render surface size changes:
@@ -168,8 +178,8 @@ public class ARViewRenderer extends Renderer {
 
         mRenderingPrimitives = Device.getInstance().getRenderingPrimitives();
 
+
         // initRendering();
-        super.onRenderSurfaceSizeChanged(gl, width, height);
     }
 
     @Override
@@ -230,6 +240,7 @@ public class ARViewRenderer extends Renderer {
             // Get the view id
             int viewID = viewList.getView(v);
 
+
             Vec4I viewport;
             // Get the viewport for that specific view
             viewport = mRenderingPrimitives.getViewport(viewID);
@@ -259,6 +270,8 @@ public class ARViewRenderer extends Renderer {
             // Apply the adjustment to the projection matrix
             Matrix.multiplyMM(projectionMatrix, 0, rawProjectionMatrixGL, 0, eyeAdjustmentGL, 0);
 
+            // this.getCurrentCamera().setProjectionMatrix(new Matrix4(projectionMatrix));
+
             currentView = viewID;
 
             // Call renderFrame from the app renderer class which implements SampleAppRendererControl
@@ -280,13 +293,40 @@ public class ARViewRenderer extends Renderer {
 
     }
 
-    public void setCurrentObject(Object3D object3D){
-        if(this.object3D!=null){
+    public void setCurrentObject(Object3D object3D) {
+        if (this.object3D != null) {
             getCurrentScene().removeChild(this.object3D);
         }
-        this.object3D = object3D;
-        object3D.setVisible(false);
-        getCurrentScene().addChild(object3D);
+
+
+        // object3D.setPosition(1, 0, -10);
+        object3D.setScale(200);
+        object3D.setRotY(90);
+        this.object3D = new Object3D();
+        this.object3D.addChild(object3D);
+        // object3D.setVisible(false);
+        getCurrentScene().addChild(this.object3D);
+
+        DirectionalLight mLight = new DirectionalLight(1f, 0.2f, -1.0f); // set the direction
+        mLight.setColor(1.0f, 1.0f, 1.0f);
+        mLight.setPower(2);
+
+        // region debug object
+        CoordinateTrident coordinateTrident = new CoordinateTrident();
+        coordinateTrident.setPosition(1, 0, -10);
+        coordinateTrident.setVisible(false);
+        getCurrentScene().addChild(coordinateTrident);
+        GridFloor gridFloor = new GridFloor(100, Color.YELLOW, 2, 10);
+        gridFloor.setPosition(0, 0, -10);
+        gridFloor.setRotZ(90);
+        gridFloor.setVisible(false);
+        getCurrentScene().addChild(gridFloor);
+        gridFloor = new GridFloor(1000, Color.BLUE, 2, 100);
+        gridFloor.setPosition(0, 0, -10);
+        gridFloor.setRotZ(90);
+        gridFloor.setVisible(false);
+        getCurrentScene().addChild(gridFloor);
+        // endregion
 
     }
 
@@ -294,10 +334,9 @@ public class ARViewRenderer extends Renderer {
 
 
         // Currently, we only care about single marker, thus only retrieve the first marker
-        if(state.getNumTrackableResults() <= 0){
-            if(this.object3D!=null)
+        if (state.getNumTrackableResults() <= 0) {
+            if (this.object3D != null)
                 this.object3D.setVisible(false);
-            // TODO: Hide ?
             return;
         }
         TrackableResult result = state.getTrackableResult(0);
@@ -314,19 +353,73 @@ public class ARViewRenderer extends Renderer {
 
         // Translation can also be applied in the similar way
         Matrix.rotateM(modelViewMatrix, 0, 90.0f, 1.0f, 0, 0);
-        Matrix.scaleM(modelViewMatrix, 0, 2, 2, 2);
+        // Matrix.scaleM(modelViewMatrix, 0, 2, 2, 2);
         Matrix.multiplyMM(modelViewProjection, 0, projectionMatrix, 0, modelViewMatrix, 0);
 
-        if(this.object3D != null){
+        if (this.object3D != null) {
             // TODO: update object position
             object3D.setVisible(true);
-            object3D.render(getCurrentCamera(),  new Matrix4(modelViewMatrix), new Matrix4(projectionMatrix), new Matrix4(), null);
+            // object3D.render(getCurrentCamera(), new Matrix4(modelViewMatrix), new Matrix4(projectionMatrix), new Matrix4(), null);
+            String str = "Model View Matrix\n";
+            for (int i = 0; i < 4; i++)
+                str += String.format(Locale.ENGLISH, "%4.2f,%4.2f,%4.2f,%4.2f\n", modelViewMatrix[i], modelViewMatrix[i + 4], modelViewMatrix[i + 8], modelViewMatrix[i + 12]);
+            str += "Projection Matrix\n";
+            for (int i = 0; i < 4; i++)
+                str += String.format(Locale.ENGLISH, "%4.2f,%4.2f,%4.2f,%4.2f\n", projectionMatrix[i], projectionMatrix[i + 4], projectionMatrix[i + 8], projectionMatrix[i + 12]);
+
+            //object3D.setBackSidedobject3D.getScenePosition());
+
+            //object3D.getModelViewProjectionMatrix().setAll(projectionMatrix);
+            transformPositionAndOrientation(modelViewMatrix);
+
+            // object3D.setPosition(mPosition);
+            mPosition.z = -mPosition.z;
+            mPosition.x = -mPosition.x;
+            mPosition.y = -mPosition.y;
+            getCurrentCamera().setPosition(mPosition);
+            object3D.setOrientation(mOrientation);
+            str += "Marker: ";
+            str += mPosition;
+            str += "Object: ";
+            str += object3D.getPosition();
+            final String string = str;
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView textView = (TextView) activity.findViewById(R.id.text_test_surface_output);
+                    textView.setText(string);
+                }
+            });
         }
 
     }
 
+    private Vector3 mPosition = new Vector3();
+    private Quaternion mOrientation = new Quaternion();
+    private double[] mModelViewMatrix = new double[16];
 
+    private void transformPositionAndOrientation(float[] modelViewMatrix) {
+        mPosition.setAll(modelViewMatrix[12], -modelViewMatrix[13],
+                -modelViewMatrix[14]);
+        for (int mI = 0; mI < 16; mI++) {
+            mModelViewMatrix[mI] = modelViewMatrix[mI];
+        }
+        mOrientation.fromMatrix(mModelViewMatrix);
 
+        if (isPortrait) {
+            mPosition.setAll(-modelViewMatrix[13], -modelViewMatrix[12],
+                    -modelViewMatrix[14]);
+            double orX = mOrientation.x;
+            mOrientation.x = -mOrientation.y;
+            mOrientation.y = -orX;
+            mOrientation.z = -mOrientation.z;
+        } else {
+            mPosition.setAll(modelViewMatrix[12], -modelViewMatrix[13],
+                    -modelViewMatrix[14]);
+            mOrientation.y = -mOrientation.y;
+            mOrientation.z = -mOrientation.z;
+        }
+    }
 
     /**
      * Render the Scene
@@ -370,6 +463,8 @@ public class ARViewRenderer extends Renderer {
     public void setNearFarPlanes(float near, float far) {
         mNearPlane = near;
         mFarPlane = far;
+        getCurrentCamera().setNearPlane(near);
+        getCurrentCamera().setFarPlane(far);
     }
 
     public void renderVideoBackground() {
@@ -499,6 +594,16 @@ public class ARViewRenderer extends Renderer {
                 + mScreenHeight + "), mSize (" + xSize + " , " + ySize + ")");
 
         com.vuforia.Renderer.getInstance().setVideoBackgroundConfig(config);
+
+
+        // Configure Screen Renderer Camera
+        CameraCalibration cameraCalibration = CameraDevice.getInstance().getCameraCalibration();
+        Vec2F size = cameraCalibration.getSize();
+        Vec2F focalLength = cameraCalibration.getFocalLength();
+        float fovInRad = 2f * (float) Math.atan(0.5f * size.getData()[1] / focalLength.getData()[1]);
+        float fovInDeg = fovInRad * 180f / M_PI;
+        getCurrentCamera().setProjectionMatrix(fovInDeg, xSize, ySize);
+        setViewPort(xSize, ySize);
 
     }
 
