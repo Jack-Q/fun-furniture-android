@@ -8,7 +8,6 @@ import android.opengl.Matrix;
 import android.os.Build;
 import android.util.Log;
 
-import com.jackq.funfurniture.AR.util.Utilities;
 import com.vuforia.COORDINATE_SYSTEM_TYPE;
 import com.vuforia.CameraCalibration;
 import com.vuforia.CameraDevice;
@@ -67,7 +66,7 @@ public abstract class AbstractARViewRenderer extends Renderer {
 
         VideoBackgroundShader() {
 
-            shaderProgramID = com.jackq.funfurniture.AR.util.Utilities.createProgramFromShaderSrc(VB_VERTEX_SHADER,
+            shaderProgramID = Utilities.createProgramFromShaderSrc(VB_VERTEX_SHADER,
                     VB_FRAGMENT_SHADER);
 
             // Rendering configuration for video background

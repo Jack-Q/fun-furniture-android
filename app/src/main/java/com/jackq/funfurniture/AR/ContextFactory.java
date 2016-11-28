@@ -1,4 +1,4 @@
-package com.jackq.funfurniture.AR.util;
+package com.jackq.funfurniture.AR;
 
 import android.opengl.GLSurfaceView;
 import android.util.Log;

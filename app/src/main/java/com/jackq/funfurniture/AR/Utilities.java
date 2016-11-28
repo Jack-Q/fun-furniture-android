@@ -1,4 +1,4 @@
-package com.jackq.funfurniture.AR.util;
+package com.jackq.funfurniture.AR;
 
 /**
  * Created by jackq on 11/22/16.
