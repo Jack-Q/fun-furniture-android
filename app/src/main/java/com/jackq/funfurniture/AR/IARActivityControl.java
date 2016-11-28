@@ -2,10 +2,6 @@ package com.jackq.funfurniture.AR;
 
 import com.vuforia.State;
 
-/**
- * Created by jackq on 11/22/16.
- */
-
 public interface IARActivityControl {
 
 

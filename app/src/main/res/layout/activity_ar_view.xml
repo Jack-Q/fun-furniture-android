@@ -1,19 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_ar_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jackq.funfurniture.ARViewActivity">
+    tools:context="com.jackq.funfurniture.ARViewActivity"
+    >
     <FrameLayout
-        android:id="@+id/ar_surface_view_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/text_test_surface_output"
+        android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#00ffffff" />
-</RelativeLayout>
+        android:paddingBottom="-30dp"
+        >
+
+        <!--The following FrameLayout is the container of the AR canvas-->
+        <FrameLayout
+            android:id="@+id/ar_surface_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <ImageView
+            android:layout_width="180dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="-30dp"
+            android:layout_marginBottom="-10dp"
+            android:layout_gravity="bottom"
+            app:srcCompat="@drawable/logo_wide"
+            android:contentDescription="Logo" />
+    </FrameLayout>
+    <RelativeLayout
+        android:id="@+id/right_drawer"
+        android:layout_width="match_parent"
+        android:layout_gravity="end"
+        android:layout_height="360dp">
+        <TextView
+            android:id="@+id/text_test_surface_output"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00ffffff" />
+
+        <ListView
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            android:background="#111"/>
+    </RelativeLayout>
+</android.support.v4.widget.DrawerLayout>
