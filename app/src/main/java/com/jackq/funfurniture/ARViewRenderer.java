@@ -96,18 +96,18 @@ public class ARViewRenderer extends AbstractARViewRenderer {
             mPosition.y = -mPosition.y;
             getCurrentCamera().setPosition(mPosition);
             object3D.setOrientation(mOrientation);
-            str += "Marker: ";
-            str += mPosition;
-            str += "Object: ";
-            str += object3D.getPosition();
-            final String string = str;
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    TextView textView = (TextView) activity.findViewById(R.id.text_test_surface_output);
-                    textView.setText(string);
-                }
-            });
+//            str += "Marker: ";
+//            str += mPosition;
+//            str += "Object: ";
+//            str += object3D.getPosition();
+//            final String string = str;
+//            activity.runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    TextView textView = (TextView) activity.findViewById(R.id.text_test_surface_output);
+//                    textView.setText(string);
+//                }
+//            });
         }
 
     }

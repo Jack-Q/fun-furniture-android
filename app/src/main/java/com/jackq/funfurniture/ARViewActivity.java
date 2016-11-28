@@ -2,12 +2,17 @@ package com.jackq.funfurniture;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import com.jackq.funfurniture.AR.ARApplicationSession;
 import com.jackq.funfurniture.AR.AbstractARViewActivity;
@@ -19,16 +24,49 @@ import org.rajawali3d.loader.async.IAsyncLoaderCallback;
 
 public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
     private static final String TAG = "ARViewActivity";
-
-    @Override
-    public ARViewRenderer createRenderer(ARApplicationSession session){
-        return new ARViewRenderer(this, session);
-    }
+    private View contentView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        contentView = View.inflate(this, R.layout.activity_ar_view, null);
+        setContentView(contentView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        enableFullScreen();
+
+
+        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.activity_ar_view);
+        drawerLayout.setScrimColor(0x00000000);
+        drawerLayout.setClipToPadding(false);
+
+        final ImageButton drawerButton = (ImageButton) findViewById(R.id.drawer_open_btn);
+        drawerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                    drawerLayout.closeDrawer(Gravity.RIGHT);
+                } else {
+                    drawerLayout.openDrawer(Gravity.RIGHT);
+                }
+            }
+        });
+
+        final ImageButton backButton = (ImageButton) findViewById(R.id.back_btn);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ARViewActivity.this.onBackPressed();
+            }
+        });
+    }
+
+    @Override
+    public ARViewRenderer createRenderer(ARApplicationSession session) {
+        return new ARViewRenderer(this, session);
+    }
+
+    private void enableFullScreen() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -36,9 +74,6 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
         if (actionBar != null) {
             actionBar.hide();
         }
-        View contentView = View.inflate(this, R.layout.activity_ar_view, null);
-        setContentView(contentView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
         contentView.setVisibility(View.VISIBLE);
         contentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);

@@ -3,50 +3,111 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_ar_view"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    scrimColor="#00000000"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jackq.funfurniture.ARViewActivity"
-    >
+    tools:context="com.jackq.funfurniture.ARViewActivity">
+
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="-30dp"
-        >
+        android:layout_height="match_parent">
 
         <!--The following FrameLayout is the container of the AR canvas-->
         <FrameLayout
             android:id="@+id/ar_surface_view_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent">
+
+        </FrameLayout>
 
         <ImageView
             android:layout_width="180dp"
             android:layout_height="60dp"
-            android:layout_marginLeft="-30dp"
-            android:layout_marginBottom="-10dp"
             android:layout_gravity="bottom"
-            app:srcCompat="@drawable/logo_wide"
-            android:contentDescription="Logo" />
+            android:layout_marginBottom="-10dp"
+            android:layout_marginLeft="-30dp"
+            android:contentDescription="Logo"
+            app:srcCompat="@drawable/logo_wide" />
+
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+            android:background="#00000000"
+            app:srcCompat="@drawable/ar_view_back_btn" />
+
+        <ImageButton
+            android:id="@+id/drawer_open_btn"
+            android:layout_width="50dp"
+            android:layout_height="80dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="-2dp"
+            android:paddingTop="30dp"
+            android:background="#00000000"
+            app:srcCompat="@drawable/ar_view_drawer_open" />
+
     </FrameLayout>
-    <RelativeLayout
+
+    <LinearLayout
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:id="@+id/right_drawer"
-        android:layout_width="match_parent"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:layout_height="360dp">
+        android:background="#fff"
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/text_test_surface_output"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#00ffffff" />
+            android:layout_height="wrap_content"
+            android:background="#262738"
+            android:textSize="30dp"
+            android:paddingLeft="40dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:textAllCaps="true"
+            android:textColor="#eee"
+            android:text="Chair"
+            tools:ignore="RtlSymmetry,SpUsage"/>
 
-        <ListView
-            android:layout_width="240dp"
-            android:layout_height="match_parent"
-            android:choiceMode="singleChoice"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"
-            android:background="#111"/>
-    </RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:textColor="#aeda80"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:text="$2400"
+            tools:ignore="SpUsage" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Description of Item" />
+
+        <Button
+            android:layout_width="180dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:textAllCaps="true"
+            android:background="@drawable/action_btn"
+            android:textColor="#eee"
+            android:width="180dp"
+            android:height="30dp"
+            android:layout_margin="20dp"
+            android:textAlignment="center"
+            android:text="buy" />
+    </LinearLayout>
 </android.support.v4.widget.DrawerLayout>
