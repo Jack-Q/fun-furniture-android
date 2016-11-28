@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -14,14 +13,11 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
-import android.widget.Toast;
 
-import com.jackq.funfurniture.AR.IVuforiaApplicationControl;
-import com.jackq.funfurniture.AR.VuforiaApplicationException;
-import com.jackq.funfurniture.AR.VuforiaApplicationSession;
+import com.jackq.funfurniture.AR.IARActivityControl;
+import com.jackq.funfurniture.AR.ARException;
+import com.jackq.funfurniture.AR.ARApplicationSession;
 import com.jackq.funfurniture.AR.util.LoadingDialogHandler;
 import com.jackq.funfurniture.AR.util.VuforiaApplicationGLView;
 import com.jackq.funfurniture.AR.util.VuforiaTexture;
@@ -35,14 +31,13 @@ import com.vuforia.Tracker;
 import com.vuforia.TrackerManager;
 import com.vuforia.Vuforia;
 
-import java.util.ArrayList;
 import java.util.Vector;
 
 
-public class CameraActivity extends Activity implements IVuforiaApplicationControl {
+public class CameraActivity extends Activity implements IARActivityControl {
     private static final String LOGTAG = "ImageTargets";
 
-    VuforiaApplicationSession vuforiaAppSession;
+    ARApplicationSession vuforiaAppSession;
 
     private DataSet mCurrentDataset;
 
@@ -78,7 +73,7 @@ public class CameraActivity extends Activity implements IVuforiaApplicationContr
         Log.d(LOGTAG, "onCreate");
         super.onCreate(savedInstanceState);
 
-        vuforiaAppSession = new VuforiaApplicationSession(this);
+        vuforiaAppSession = new ARApplicationSession(this);
 
         startLoadingAnimation();
 
@@ -162,7 +157,7 @@ public class CameraActivity extends Activity implements IVuforiaApplicationContr
         try
         {
             vuforiaAppSession.resumeAR();
-        } catch (VuforiaApplicationException e)
+        } catch (ARException e)
         {
             Log.e(LOGTAG, e.getString());
         }
@@ -204,7 +199,7 @@ public class CameraActivity extends Activity implements IVuforiaApplicationContr
         try
         {
             vuforiaAppSession.pauseAR();
-        } catch (VuforiaApplicationException e)
+        } catch (ARException e)
         {
             Log.e(LOGTAG, e.getString());
         }
@@ -221,7 +216,7 @@ public class CameraActivity extends Activity implements IVuforiaApplicationContr
         try
         {
             vuforiaAppSession.stopAR();
-        } catch (VuforiaApplicationException e)
+        } catch (ARException e)
         {
             Log.e(LOGTAG, e.getString());
         }
@@ -348,7 +343,7 @@ public class CameraActivity extends Activity implements IVuforiaApplicationContr
 
 
     @Override
-    public void onInitARDone(VuforiaApplicationException exception)
+    public void onInitARDone(ARException exception)
     {
 
         if (exception == null)
@@ -373,7 +368,7 @@ public class CameraActivity extends Activity implements IVuforiaApplicationContr
             try
             {
                 vuforiaAppSession.startAR(CameraDevice.CAMERA_DIRECTION.CAMERA_DIRECTION_DEFAULT);
-            } catch (VuforiaApplicationException e)
+            } catch (ARException e)
             {
                 Log.e(LOGTAG, e.getString());
             }

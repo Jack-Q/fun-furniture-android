@@ -6,7 +6,7 @@ import com.vuforia.State;
  * Created by jackq on 11/22/16.
  */
 
-public interface IVuforiaApplicationControl {
+public interface IARActivityControl {
 
 
     // To be called to initialize the trackers
@@ -37,7 +37,7 @@ public interface IVuforiaApplicationControl {
     // This callback is called after the Vuforia initialization is complete,
     // the trackers are initialized, their data loaded and
     // tracking is ready to start
-    void onInitARDone(VuforiaApplicationException e);
+    void onInitARDone(ARException e);
 
 
     // This callback is called every cycle

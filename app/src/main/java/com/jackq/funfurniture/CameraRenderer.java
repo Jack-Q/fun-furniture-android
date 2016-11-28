@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 
 import com.jackq.funfurniture.AR.VuforiaAppRenderer;
 import com.jackq.funfurniture.AR.VuforiaAppRendererControl;
-import com.jackq.funfurniture.AR.VuforiaApplicationSession;
+import com.jackq.funfurniture.AR.ARApplicationSession;
 import com.jackq.funfurniture.AR.util.CubeShaders;
 import com.jackq.funfurniture.AR.util.LoadingDialogHandler;
 import com.jackq.funfurniture.AR.util.SingleObject;
@@ -38,7 +38,7 @@ import javax.microedition.khronos.opengles.GL10;
 public class CameraRenderer extends Renderer implements GLSurfaceView.Renderer, VuforiaAppRendererControl {
     private static final String LOGTAG = "ImageTargetRenderer";
 
-    private VuforiaApplicationSession vuforiaAppSession;
+    private ARApplicationSession vuforiaAppSession;
     private CameraActivity mActivity;
     private VuforiaAppRenderer mSampleAppRenderer;
 
@@ -61,7 +61,7 @@ public class CameraRenderer extends Renderer implements GLSurfaceView.Renderer, 
     private static final float OBJECT_SCALE_FLOAT = 3.0f;
 
 
-    public CameraRenderer(CameraActivity activity, VuforiaApplicationSession session) {
+    public CameraRenderer(CameraActivity activity, ARApplicationSession session) {
         super(activity);
 
         mActivity = activity;

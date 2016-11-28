@@ -31,7 +31,10 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_camera"
             android:theme="@style/FullscreenTheme" />
-        <activity android:name=".ARViewActivity"></activity>
+        <activity
+            android:name=".ARViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
+            android:theme="@style/FullscreenTheme" />
     </application>
 
 </manifest>

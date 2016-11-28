@@ -4,6 +4,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.jackq.funfurniture.AR.IVuforiaApplicationControl;
-import com.jackq.funfurniture.AR.VuforiaApplicationException;
-import com.jackq.funfurniture.AR.VuforiaApplicationSession;
+import com.jackq.funfurniture.AR.ARApplicationSession;
+import com.jackq.funfurniture.AR.ARException;
+import com.jackq.funfurniture.AR.IARActivityControl;
 import com.vuforia.CameraDevice;
 import com.vuforia.DataSet;
 import com.vuforia.ObjectTracker;
@@ -34,12 +35,12 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLContext;
 import javax.microedition.khronos.egl.EGLDisplay;
 
-public class ARViewActivity extends AppCompatActivity implements IVuforiaApplicationControl {
+public class ARViewActivity extends AppCompatActivity implements IARActivityControl {
     private static final String TAG = "ARViewActivity";
     private SurfaceView arSurfaceView;
     private ARViewRenderer renderer;
 
-    private VuforiaApplicationSession vuforiaApplicationSession;
+    private ARApplicationSession ARApplicationSession;
     private DataSet markerDataSet;
 
     private boolean enableExtendedTracking = true;
@@ -48,13 +49,28 @@ public class ARViewActivity extends AppCompatActivity implements IVuforiaApplica
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ar_view);
+        View contentView = View.inflate(this, R.layout.activity_ar_view, null);
+        contentView.setVisibility(View.VISIBLE);
+        setContentView(contentView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        contentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            contentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | contentView.getSystemUiVisibility());
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            contentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | contentView.getSystemUiVisibility());
+        }
 
         // Init parameter
-        vuforiaApplicationSession = new VuforiaApplicationSession(this);
+        ARApplicationSession = new ARApplicationSession(this);
 
         // Start loading Vuforia AR Session
-        vuforiaApplicationSession.initAR(this, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        ARApplicationSession.initAR(this, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 
     }
@@ -121,8 +137,8 @@ public class ARViewActivity extends AppCompatActivity implements IVuforiaApplica
     protected void onResume() {
         super.onResume();
         try {
-            vuforiaApplicationSession.resumeAR();
-        } catch (VuforiaApplicationException e) {
+            ARApplicationSession.resumeAR();
+        } catch (ARException e) {
             Log.e(TAG, e.getString(), e);
         }
 
@@ -136,7 +152,7 @@ public class ARViewActivity extends AppCompatActivity implements IVuforiaApplica
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        vuforiaApplicationSession.onConfigurationChanged();
+        ARApplicationSession.onConfigurationChanged();
     }
 
     @Override
@@ -148,8 +164,8 @@ public class ARViewActivity extends AppCompatActivity implements IVuforiaApplica
         }
 
         try {
-            vuforiaApplicationSession.pauseAR();
-        } catch (VuforiaApplicationException e) {
+            ARApplicationSession.pauseAR();
+        } catch (ARException e) {
             Log.e(TAG, e.getMessage(), e);
         }
     }
@@ -158,8 +174,8 @@ public class ARViewActivity extends AppCompatActivity implements IVuforiaApplica
     protected void onDestroy() {
         super.onDestroy();
         try {
-            vuforiaApplicationSession.stopAR();
-        } catch (VuforiaApplicationException e) {
+            ARApplicationSession.stopAR();
+        } catch (ARException e) {
             Log.e(TAG, e.getMessage(), e);
         }
         System.gc();
@@ -233,7 +249,7 @@ public class ARViewActivity extends AppCompatActivity implements IVuforiaApplica
     }
 
     @Override
-    public void onInitARDone(VuforiaApplicationException e) {
+    public void onInitARDone(ARException e) {
         if (e != null) {
             // error occurs in initialization process
             Log.e(TAG, e.getString(), e);
@@ -243,7 +259,7 @@ public class ARViewActivity extends AppCompatActivity implements IVuforiaApplica
         FrameLayout layout = (FrameLayout) findViewById(R.id.ar_surface_view_container);
         arSurfaceView = new SurfaceView(this);
 
-        renderer = new ARViewRenderer(this, vuforiaApplicationSession);
+        renderer = new ARViewRenderer(this, ARApplicationSession);
         renderer.setActive(true);
 
         initApplicationAR();
@@ -264,8 +280,8 @@ public class ARViewActivity extends AppCompatActivity implements IVuforiaApplica
                 ViewGroup.LayoutParams.MATCH_PARENT));
 
         try {
-            vuforiaApplicationSession.startAR(CameraDevice.CAMERA_DIRECTION.CAMERA_DIRECTION_DEFAULT);
-        } catch (VuforiaApplicationException ex) {
+            ARApplicationSession.startAR(CameraDevice.CAMERA_DIRECTION.CAMERA_DIRECTION_DEFAULT);
+        } catch (ARException ex) {
             Log.e(TAG, ex.getString(), ex);
         }
 

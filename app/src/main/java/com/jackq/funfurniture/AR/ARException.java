@@ -31,7 +31,7 @@ import com.vuforia.VideoBackgroundConfig;
 import com.vuforia.VideoMode;
 import com.vuforia.ViewList;
 
-public class VuforiaApplicationException extends Exception
+public class ARException extends Exception
 {
 
     private static final long serialVersionUID = 2L;
@@ -50,7 +50,7 @@ public class VuforiaApplicationException extends Exception
     private String mString = "";
 
 
-    public VuforiaApplicationException(int code, String description)
+    public ARException(int code, String description)
     {
         super(description);
         mCode = code;
