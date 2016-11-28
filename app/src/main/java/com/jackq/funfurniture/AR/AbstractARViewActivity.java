@@ -93,7 +93,7 @@ public abstract class AbstractARViewActivity<Renderer extends AbstractARViewRend
         arApplicationSession = new ARApplicationSession(this);
 
         // Start loading Vuforia AR Session
-        arApplicationSession.initAR(this, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        arApplicationSession.initAR(this, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
     @Override
