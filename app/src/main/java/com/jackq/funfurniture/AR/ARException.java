@@ -1,36 +1,6 @@
 package com.jackq.funfurniture.AR;
 
 
-import android.app.Activity;
-import android.content.res.Configuration;
-import android.graphics.Point;
-import android.opengl.GLES20;
-import android.opengl.Matrix;
-import android.os.Build;
-import android.util.Log;
-
-import com.jackq.funfurniture.AR.util.Utilities;
-import com.jackq.funfurniture.AR.util.VideoBackgroundShader;
-import com.vuforia.COORDINATE_SYSTEM_TYPE;
-import com.vuforia.CameraDevice;
-import com.vuforia.Device;
-import com.vuforia.GLTextureUnit;
-import com.vuforia.Matrix34F;
-import com.vuforia.Mesh;
-import com.vuforia.Renderer;
-import com.vuforia.RenderingPrimitives;
-import com.vuforia.State;
-import com.vuforia.Tool;
-import com.vuforia.TrackerManager;
-import com.vuforia.VIDEO_BACKGROUND_REFLECTION;
-import com.vuforia.VIEW;
-import com.vuforia.Vec2F;
-import com.vuforia.Vec2I;
-import com.vuforia.Vec4I;
-import com.vuforia.VideoBackgroundConfig;
-import com.vuforia.VideoMode;
-import com.vuforia.ViewList;
-
 public class ARException extends Exception
 {
 

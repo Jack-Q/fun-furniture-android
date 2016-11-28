@@ -5,16 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.jackq.funfurniture.ARViewActivity">
-
     <FrameLayout
         android:id="@+id/ar_surface_view_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </FrameLayout>
+
     <TextView
         android:id="@+id/text_test_surface_output"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello Matrix"
         android:background="#00ffffff" />
 </RelativeLayout>
