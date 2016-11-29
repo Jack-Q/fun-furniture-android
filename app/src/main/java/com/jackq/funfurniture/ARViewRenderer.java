@@ -121,7 +121,8 @@ public class ARViewRenderer extends AbstractARViewRenderer {
 
         // object3D.setPosition(1, 0, -10);
         object3D.setScale(200);
-        object3D.setRotY(90);
+        object3D.setRotZ(-90);
+        // object3D.setRotY(180);
         this.object3D = new Object3D();
         this.object3D.addChild(object3D);
         // object3D.setVisible(false);
