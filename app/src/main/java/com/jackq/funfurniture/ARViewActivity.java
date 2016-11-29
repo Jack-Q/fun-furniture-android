@@ -21,7 +21,10 @@ import com.jackq.funfurniture.model.Furniture;
 
 import org.rajawali3d.loader.ALoader;
 import org.rajawali3d.loader.LoaderOBJ;
+import org.rajawali3d.loader.SceneModel;
+import org.rajawali3d.loader.SceneModelLoader;
 import org.rajawali3d.loader.async.IAsyncLoaderCallback;
+import org.rajawali3d.util.RajLog;
 
 import java.util.Locale;
 
@@ -30,6 +33,7 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
     private static final String TAG = "ARViewActivity";
     private Furniture furniture;
     private View contentView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,8 +123,12 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
 
     @Override
     public void initApplicationARScene() {
-        final LoaderOBJ loaderOBJ = new LoaderOBJ(getResources(), getRenderer().getTextureManager(), R.raw.model_chair_obj);
-        getRenderer().loadModel(loaderOBJ, new IAsyncLoaderCallback() {
+        // load content form server
+        // TODO: Load model from server
+        // final SceneModel sceneModel =
+
+        final SceneModelLoader sceneModelLoader = new SceneModelLoader(getResources(), getRenderer().getTextureManager(), R.raw.model_chair_obj);
+        getRenderer().loadModel(sceneModelLoader, new IAsyncLoaderCallback() {
             @Override
             public void onModelLoadComplete(ALoader loader) {
 
