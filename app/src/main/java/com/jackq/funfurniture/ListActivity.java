@@ -1,5 +1,6 @@
 package com.jackq.funfurniture;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.jackq.funfurniture.model.Furniture;
 
@@ -88,7 +88,9 @@ public class ListActivity extends AppCompatActivity implements FurnitureListItem
 
     @Override
     public void onListFragmentInteraction(Furniture item) {
-        Toast.makeText(ListActivity.this, item.toString(), Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(ListActivity.this, ItemDetailActivity.class);
+        intent.putExtra("furniture", item);
+        startActivity(intent);
     }
 
     /**
@@ -96,34 +98,31 @@ public class ListActivity extends AppCompatActivity implements FurnitureListItem
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        private String[] categoryNames;
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        public SectionsPagerAdapter(FragmentManager fm)
+        {
             super(fm);
+            categoryNames = getResources().getStringArray(R.array.list_categories);
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return FurnitureListItemFragment.newInstance(position + 1);
+            return FurnitureListItemFragment.newInstance(position);
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return categoryNames.length;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "SECTION 1";
-                case 1:
-                    return "SECTION 2";
-                case 2:
-                    return "SECTION 3";
-            }
+            if(position < categoryNames.length)
+                return categoryNames[position];
             return null;
         }
     }

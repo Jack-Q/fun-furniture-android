@@ -2,34 +2,46 @@ package com.jackq.funfurniture;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.jackq.funfurniture.AR.ARApplicationSession;
 import com.jackq.funfurniture.AR.AbstractARViewActivity;
+import com.jackq.funfurniture.model.Furniture;
 
 import org.rajawali3d.loader.ALoader;
 import org.rajawali3d.loader.LoaderOBJ;
 import org.rajawali3d.loader.async.IAsyncLoaderCallback;
 
+import java.util.Locale;
+
 
 public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
     private static final String TAG = "ARViewActivity";
+    private Furniture furniture;
     private View contentView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        // Get data from previous item
+        if (getIntent().getExtras() != null) {
+            furniture = (Furniture) getIntent().getExtras().get("furniture");
+        }
+        if (furniture == null) furniture = Furniture.SAMPLE; // TODO: test data used here
+
         contentView = View.inflate(this, R.layout.activity_ar_view, null);
         setContentView(contentView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
@@ -57,6 +69,22 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
             @Override
             public void onClick(View view) {
                 ARViewActivity.this.onBackPressed();
+            }
+        });
+
+        // Update UI display entry
+        TextView itemNameView = (TextView) findViewById(R.id.ar_item_name);
+        itemNameView.setText(furniture.getName());
+        TextView itemPriceView = (TextView) findViewById(R.id.ar_item_price);
+        itemPriceView.setText(String.format(Locale.ENGLISH, "$ %.2f", furniture.getPrice()));
+        TextView itemDescriptionView = (TextView) findViewById(R.id.ar_item_detail);
+        itemDescriptionView.setText(furniture.getDescription());
+        Button itemActionButton = (Button) findViewById(R.id.ar_item_action);
+        itemActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Not connected yet, coming soon...", Snackbar.LENGTH_LONG)
+                        .setAction("OK", null).show();
             }
         });
     }

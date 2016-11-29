@@ -1,8 +1,16 @@
 package com.jackq.funfurniture.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Furniture{
+public class Furniture implements Serializable {
+
+    // DE
+    public static final Furniture SAMPLE = new Furniture(1,
+            "Test Furniture",
+            "This is a sample item only used in the development stage",
+            1, 1222.12f, "UNKNOWN", new ArrayList<String>());
+
     private int id;
     private String name;
 

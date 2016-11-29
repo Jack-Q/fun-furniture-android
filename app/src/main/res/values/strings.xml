@@ -8,6 +8,8 @@
         <item>Bed</item>
         <item>Wallpaper</item>
         <item>Table</item>
+        <item>Sofa</item>
+        <item>Decorations</item>
     </string-array>
     <string name="title_activity_item_detail">ItemDetailActivity</string>
     <string name="large_text">

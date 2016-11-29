@@ -64,7 +64,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/text_test_surface_output"
+            android:id="@+id/ar_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#262738"
@@ -78,6 +78,7 @@
             tools:ignore="RtlSymmetry,SpUsage"/>
 
         <TextView
+            android:id="@+id/ar_item_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -89,15 +90,16 @@
             tools:ignore="SpUsage" />
 
         <TextView
+            android:id="@+id/ar_item_detail"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
-            android:text="Description of Item" />
+            android:layout_marginTop="20dp"/>
 
         <Button
+            android:id="@+id/ar_item_action"
             android:layout_width="180dp"
             android:layout_height="30dp"
             android:layout_gravity="center_horizontal"
