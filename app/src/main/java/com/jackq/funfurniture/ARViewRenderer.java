@@ -114,6 +114,8 @@ public class ARViewRenderer extends AbstractARViewRenderer {
 
 
     public void setCurrentObject(Object3D object3D) {
+        if(object3D == null)
+            return;
         if (this.object3D != null) {
             getCurrentScene().removeChild(this.object3D);
         }
@@ -127,7 +129,7 @@ public class ARViewRenderer extends AbstractARViewRenderer {
         this.object3D.addChild(object3D);
         // object3D.setVisible(false);
         getCurrentScene().addChild(this.object3D);
-
+        /*
         DirectionalLight mLight = new DirectionalLight(1f, 0.2f, -1.0f); // set the direction
         mLight.setColor(1.0f, 1.0f, 1.0f);
         mLight.setPower(2);
@@ -148,6 +150,7 @@ public class ARViewRenderer extends AbstractARViewRenderer {
         gridFloor.setVisible(false);
         getCurrentScene().addChild(gridFloor);
         // endregion
+        */
 
     }
 
