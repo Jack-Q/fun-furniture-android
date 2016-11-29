@@ -120,7 +120,7 @@ public class ARViewRenderer extends AbstractARViewRenderer {
 
 
         // object3D.setPosition(1, 0, -10);
-        object3D.setScale(200);
+        object3D.setScale(200); // Actual size maybe about 1000 or resize the marker
         object3D.setRotZ(-90);
         // object3D.setRotY(180);
         this.object3D = new Object3D();
