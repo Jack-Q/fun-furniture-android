@@ -24,6 +24,7 @@
         </FrameLayout>
 
         <ImageView
+            android:id="@+id/change_model"
             android:layout_width="180dp"
             android:layout_height="60dp"
             android:layout_gravity="bottom"

@@ -13,12 +13,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jackq.funfurniture.AR.ARApplicationSession;
 import com.jackq.funfurniture.AR.AbstractARViewActivity;
 import com.jackq.funfurniture.model.Furniture;
 
+import org.rajawali3d.Object3D;
 import org.rajawali3d.loader.ALoader;
 import org.rajawali3d.loader.LoaderOBJ;
 import org.rajawali3d.loader.SceneModel;
@@ -33,7 +35,10 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
     private static final String TAG = "ARViewActivity";
     private Furniture furniture;
     private View contentView;
+    private boolean model;
 
+    Object3D object1 = null;
+    Object3D object2 = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +96,14 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
                         .setAction("OK", null).show();
             }
         });
+
+        ImageView imageView = (ImageView) findViewById(R.id.change_model);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeModel();
+            }
+        });
     }
 
     @Override
@@ -134,7 +147,26 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
 
                 Log.d(TAG, "Model load complete: " + loader);
                 final LoaderOBJ obj = (LoaderOBJ) loader;
-                getRenderer().setCurrentObject(obj.getParsedObject());
+                object1 = obj.getParsedObject();
+                if(model){
+                    getRenderer().setCurrentObject(object1);
+                }
+                final SceneModelLoader sceneModelLoader1 = new SceneModelLoader(getResources(), getRenderer().getTextureManager(), R.raw.model_bed_obj);
+                getRenderer().loadModel(sceneModelLoader1, new IAsyncLoaderCallback() {
+                    @Override
+                    public void onModelLoadComplete(ALoader loader) {
+                        LoaderOBJ loader1 = (LoaderOBJ) loader;
+                        object2 = loader1.getParsedObject();
+                        if(!model){
+                            getRenderer().setCurrentObject(object2);
+                        }
+                    }
+
+                    @Override
+                    public void onModelLoadFailed(ALoader loader) {
+
+                    }
+                }, R.raw.model_bed_obj);
             }
 
             @Override
@@ -142,10 +174,22 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
                 Log.e(TAG, "failed to load the content");
             }
         }, R.raw.model_chair_obj);
+
+
     }
 
     @Override
     public ViewGroup getARViewContainer() {
         return (ViewGroup) findViewById(R.id.ar_surface_view_container);
+    }
+
+    void changeModel(){
+        if(model){
+            model = false;
+            getRenderer().setCurrentObject(object1);
+        }else{
+            model = true;
+            getRenderer().setCurrentObject(object2);
+        }
     }
 }

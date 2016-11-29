@@ -164,8 +164,8 @@ public abstract class AbstractARViewActivity<Renderer extends AbstractARViewRend
             return false;
 
         if (!markerDataSet.load(
-                "Test0000.xml",
-                // "StonesAndChips.xml",
+                "Test0000.xml",     // logo marker
+                // "StonesAndChips.xml",  // test marker
                 STORAGE_TYPE.STORAGE_APPRESOURCE))
             return false;
 
