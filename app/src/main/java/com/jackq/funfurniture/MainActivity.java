@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Removed", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(MainActivity.this, ListActivity.class));
             }
         });
 

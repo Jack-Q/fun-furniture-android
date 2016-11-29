@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Fun Furniture</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_list">Furniture</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string-array name="list_categories">
+        <item>Chair</item>
+        <item>Bed</item>
+        <item>Wallpaper</item>
+        <item>Table</item>
+    </string-array>
 </resources>
