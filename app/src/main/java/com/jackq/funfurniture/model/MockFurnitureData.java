@@ -10,6 +10,7 @@ public class MockFurnitureData {
     public static ArrayList<Furniture> mockFurniture;
 
     static {
+        mockFurniture = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             mockFurniture.add(new Furniture(i + 1,
                     "Furniture" + i,

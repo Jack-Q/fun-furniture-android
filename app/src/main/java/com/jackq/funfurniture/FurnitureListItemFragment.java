@@ -10,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jackq.funfurniture.dummy.DummyContent;
-import com.jackq.funfurniture.dummy.DummyContent.DummyItem;
 import com.jackq.funfurniture.model.Furniture;
 import com.jackq.funfurniture.model.MockFurnitureData;
 
