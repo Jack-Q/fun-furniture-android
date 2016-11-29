@@ -1,15 +1,18 @@
 package com.jackq.funfurniture;
 
+import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jackq.funfurniture.FurnitureListItemFragment.OnListFragmentInteractionListener;
 import com.jackq.funfurniture.model.Furniture;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Furniture} and makes a call to the
@@ -35,9 +38,11 @@ public class MyFurnitureListItemRecyclerViewAdapter extends RecyclerView.Adapter
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getName());
-        holder.mContentView.setText(mValues.get(position).getDescription());
+        Furniture furniture = mValues.get(position);
+        holder.mItem = furniture;
+        holder.mItemName.setText(furniture.getName());
+        holder.mItemPrice.setText(String.format(Locale.ENGLISH, "%.2f", furniture.getPrice()));
+        holder.mItemDescription.setText(furniture.getDescription());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,20 +63,27 @@ public class MyFurnitureListItemRecyclerViewAdapter extends RecyclerView.Adapter
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
         public Furniture mItem;
+        public final ImageView mItemImage;
+        public final TextView mItemName;
+        public final AppCompatRatingBar mItemRate;
+        public final TextView mItemPrice;
+        public final TextView mItemDescription;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+
+            mItemImage = (ImageView) view.findViewById(R.id.list_item_image);
+            mItemName = (TextView) view.findViewById(R.id.list_item_name);
+            mItemRate = (AppCompatRatingBar) view.findViewById(R.id.list_item_rate);
+            mItemPrice = (TextView) view.findViewById(R.id.list_item_price);
+            mItemDescription = (TextView) view.findViewById(R.id.list_item_description);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mItemName.getText() + "'";
         }
     }
 }
