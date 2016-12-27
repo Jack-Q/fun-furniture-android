@@ -6,12 +6,18 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.reflect.TypeToken;
 import com.jackq.funfurniture.model.Furniture;
 import com.jackq.funfurniture.model.MockFurnitureData;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -20,7 +26,7 @@ import com.jackq.funfurniture.model.MockFurnitureData;
  * interface.
  */
 public class FurnitureListItemFragment extends Fragment {
-
+    private static final String DEBUG_TAG = "FURNITURE_LIST";
     private static final String ARG_CATEGORY = "categoryCode";
     private int mColumnCount = 1;
     private int mCategoryCode = 1;
@@ -50,6 +56,18 @@ public class FurnitureListItemFragment extends Fragment {
             mCategoryCode = getArguments().getInt(ARG_CATEGORY);
             String[] stringArray = getResources().getStringArray(R.array.list_categories);
             mCategoryName = mCategoryCode < stringArray.length ? stringArray[mCategoryCode] : ("New Category " + mCategoryCode);
+
+            // After creating the item start loading image from the server
+            Ion.with(this).load("http://fun-furniture.azurewebsites.net/api/list?cat=2").as(new TypeToken<List<Furniture>>() {
+            }).setCallback(new FutureCallback<List<Furniture>>() {
+                @Override
+                public void onCompleted(Exception e, List<Furniture> result) {
+                    Log.d(DEBUG_TAG, "Fetched result of list" + result.size());
+                    for (Furniture f : result) {
+                        Log.d(DEBUG_TAG, "onCompleted: " + f.getName());
+                    }
+                }
+            });
         }
 
     }

@@ -2,6 +2,7 @@ package com.jackq.funfurniture.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Furniture implements Serializable {
 
@@ -18,7 +19,7 @@ public class Furniture implements Serializable {
     private int categoryCode;
     private float price;
     private String url;
-    private ArrayList<String> pictures;
+    private List<String> pictures = new ArrayList<>();
 
     public Furniture() {
         this.pictures = new ArrayList<>();
@@ -82,7 +83,7 @@ public class Furniture implements Serializable {
         this.url = url;
     }
 
-    public ArrayList<String> getPictures() {
+    public List<String> getPictures() {
         return pictures;
     }
 
