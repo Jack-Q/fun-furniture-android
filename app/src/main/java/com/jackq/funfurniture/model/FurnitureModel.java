@@ -71,18 +71,18 @@ public class FurnitureModel {
     }
 
     public String getFileNameMtl(){
-        return this.getId() + "-model.mtl";
+        return this.getId() + "_model_mtl";
     }
     public String getFileNameObj(){
-        return this.getId() + "-model.obj";
+        return this.getId() + "_model.obj";
     }
     public String getFileNameShadow(){
-        return this.getId() + "-shadow.png";
+        return this.getId() + "_shadow.png";
     }
     public String getFileNameTexture(){
-        return this.getId() + "-texture.jpg";
+        return this.getId() + "_texture.jpg";
     }
     public String getFileNameThumb(){
-        return this.getId() + "-thumb.jpg";
+        return this.getId() + "_thumb.jpg";
     }
 }

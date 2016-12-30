@@ -1,27 +1,19 @@
 package com.jackq.funfurniture.API;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.jackq.funfurniture.model.FurnitureModel;
 import com.koushikdutta.async.future.Future;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-import com.koushikdutta.ion.ProgressCallback;
-import com.vuforia.WordList;
-
 
 import java.io.File;
-
-/**
- * Created by jackq on 12/30/16.
- */
 
 public class APIModelLoader implements FutureCallback<File>{
     public interface LoaderCallback{
         void handlerError(Exception e);
-        void finish();
+        void finish(File model);
     }
 
     private static final String TAG = "API_MODEL_LOADER";
@@ -45,12 +37,13 @@ public class APIModelLoader implements FutureCallback<File>{
             Ion.getDefault(context).cancelAll(this);
             callback.handlerError(e);
         }
-        Log.e(TAG, "onCompleted: " + result.getAbsolutePath());
-        synchronized (this){
+        Log.d(TAG, "onCompleted: " + result.getAbsolutePath());
             finishCount++;
+            Log.d(TAG, "FINISH loading 5 components");
+            Log.d(TAG, "FINISH " + finishCount);
             if(finishCount == 5)
-                callback.finish();
-        }
+                callback.finish(new File(getModelDir(), model.getFileNameObj()));
+
     }
 
     public void load(){

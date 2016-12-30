@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.transition.Scene;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -31,6 +32,7 @@ import org.rajawali3d.loader.SceneModelLoader;
 import org.rajawali3d.loader.async.IAsyncLoaderCallback;
 import org.rajawali3d.util.RajLog;
 
+import java.io.File;
 import java.util.Locale;
 
 
@@ -40,9 +42,10 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
     private FurnitureModel furnitureModel;
     private View contentView;
     private boolean model;
+    private File modelFile = null;
+    private boolean initFinish = false;
 
-    Object3D object1 = null;
-    Object3D object2 = null;
+    Object3D modelObject = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,13 +104,13 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
             }
         });
 
-        ImageView imageView = (ImageView) findViewById(R.id.change_model);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                changeModel();
-            }
-        });
+//        ImageView imageView = (ImageView) findViewById(R.id.change_model);
+//        imageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                changeModel();
+//            }
+//        });
 
         loadModel();
     }
@@ -142,46 +145,25 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
 
     @Override
     public void initApplicationARScene() {
-        // load content form server
-        // TODO: Load model from server
-        // final SceneModel sceneModel =
+        initFinish = true;
+        if(modelFile == null) return;
 
-        final SceneModelLoader sceneModelLoader = new SceneModelLoader(getResources(), getRenderer().getTextureManager(), R.raw.model_chair_obj);
-        getRenderer().loadModel(sceneModelLoader, new IAsyncLoaderCallback() {
+        final SceneModelLoader loader = new SceneModelLoader(getRenderer(), modelFile);
+        getRenderer().loadModel(loader, new IAsyncLoaderCallback() {
             @Override
             public void onModelLoadComplete(ALoader loader) {
 
                 Log.d(TAG, "Model load complete: " + loader);
                 final LoaderOBJ obj = (LoaderOBJ) loader;
-                object1 = obj.getParsedObject();
-                if(model){
-                    getRenderer().setCurrentObject(object1);
-                }
-                final SceneModelLoader sceneModelLoader1 = new SceneModelLoader(getResources(), getRenderer().getTextureManager(), R.raw.model_bed_obj);
-                getRenderer().loadModel(sceneModelLoader1, new IAsyncLoaderCallback() {
-                    @Override
-                    public void onModelLoadComplete(ALoader loader) {
-                        LoaderOBJ loader1 = (LoaderOBJ) loader;
-                        object2 = loader1.getParsedObject();
-                        if(!model){
-                            getRenderer().setCurrentObject(object2);
-                        }
-                    }
-
-                    @Override
-                    public void onModelLoadFailed(ALoader loader) {
-
-                    }
-                }, R.raw.model_bed_obj);
+                modelObject = obj.getParsedObject();
+                    getRenderer().setCurrentObject(modelObject);
             }
 
             @Override
             public void onModelLoadFailed(ALoader loader) {
                 Log.e(TAG, "failed to load the content");
             }
-        }, R.raw.model_chair_obj);
-
-
+        }, 0);
     }
 
     @Override
@@ -212,19 +194,13 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
             }
 
             @Override
-            public void finish() {
+            public void finish(File model) {
                 Log.e(TAG, "finish: download files");
+                modelFile = model;
+                if(initFinish)
+                    initApplicationARScene();
             }
         }).load();
     }
 
-    void changeModel(){
-        if(model){
-            model = false;
-            getRenderer().setCurrentObject(object1);
-        }else{
-            model = true;
-            getRenderer().setCurrentObject(object2);
-        }
-    }
 }
