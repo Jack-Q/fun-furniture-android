@@ -16,9 +16,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jackq.funfurniture.API.APIServer;
 import com.jackq.funfurniture.AR.ARApplicationSession;
 import com.jackq.funfurniture.AR.AbstractARViewActivity;
 import com.jackq.funfurniture.model.Furniture;
+import com.jackq.funfurniture.model.FurnitureModel;
 
 import org.rajawali3d.Object3D;
 import org.rajawali3d.loader.ALoader;
@@ -34,6 +36,7 @@ import java.util.Locale;
 public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
     private static final String TAG = "ARViewActivity";
     private Furniture furniture;
+    private FurnitureModel furnitureModel;
     private View contentView;
     private boolean model;
 
@@ -104,6 +107,8 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
                 changeModel();
             }
         });
+
+        loadModel();
     }
 
     @Override
@@ -181,6 +186,21 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
     @Override
     public ViewGroup getARViewContainer() {
         return (ViewGroup) findViewById(R.id.ar_surface_view_container);
+    }
+
+    private void loadModel(){
+        APIServer.getItemModel(this, furniture.getId(), new APIServer.APIServerCallback<FurnitureModel>() {
+            @Override
+            public void onResource(FurnitureModel resource) {
+                furnitureModel = resource;
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e(TAG, "onError: error occurred while loading model", e);
+            }
+        });
     }
 
     void changeModel(){
