@@ -1,7 +1,9 @@
 package com.jackq.funfurniture;
 
+import android.content.Context;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import com.jackq.funfurniture.FurnitureListItemFragment.OnListFragmentInteractionListener;
 import com.jackq.funfurniture.model.Furniture;
+import com.koushikdutta.ion.Ion;
 
 import java.util.List;
 import java.util.Locale;
@@ -20,13 +23,15 @@ import java.util.Locale;
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyFurnitureListItemRecyclerViewAdapter extends RecyclerView.Adapter<MyFurnitureListItemRecyclerViewAdapter.ViewHolder> {
-
+    private static final String TAG = "LIST_ITEM_ADAPTER";
     private final List<Furniture> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private final Context mContext;
 
-    public MyFurnitureListItemRecyclerViewAdapter(List<Furniture> items, OnListFragmentInteractionListener listener) {
+    public MyFurnitureListItemRecyclerViewAdapter(Context context, List<Furniture> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
+        mContext = context;
     }
 
     @Override
@@ -43,7 +48,11 @@ public class MyFurnitureListItemRecyclerViewAdapter extends RecyclerView.Adapter
         holder.mItemName.setText(furniture.getName());
         holder.mItemPrice.setText(String.format(Locale.ENGLISH, "%.2f", furniture.getPrice()));
         holder.mItemDescription.setText(furniture.getDescription());
-
+        //holder.mItemImage.setImageURI();
+        if(furniture.getPictures() != null && furniture.getPictures().size() > 0){
+            Log.d(TAG, "Load image" + furniture.getPictures().get(0));
+            Ion.with(mContext).load(furniture.getPictures().get(0)).withBitmap().placeholder(R.drawable.logo_main).intoImageView(holder.mItemImage);
+        }
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

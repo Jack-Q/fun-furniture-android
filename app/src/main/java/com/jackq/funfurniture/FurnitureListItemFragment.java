@@ -60,7 +60,9 @@ public class FurnitureListItemFragment extends Fragment {
             mCategoryName = mCategoryCode < stringArray.length ? stringArray[mCategoryCode] : ("New Category " + mCategoryCode);
 
             // After creating the item start loading image from the server
-            Ion.with(this).load("http://fun-furniture.azurewebsites.net/api/list?cat=" + mCategoryCode).as(new TypeToken<List<Furniture>>() {
+            String host = "fun-furniture.azurewebsites.net";
+            host = "192.168.43.50:8080";
+            Ion.with(this).load("http://" + host+ "/api/list?cat=" + mCategoryCode).as(new TypeToken<List<Furniture>>() {
             }).setCallback(new FutureCallback<List<Furniture>>() {
                 @Override
                 public void onCompleted(Exception e, List<Furniture> result) {
@@ -90,7 +92,7 @@ public class FurnitureListItemFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            adapter = new MyFurnitureListItemRecyclerViewAdapter(this.furnitures, mListener);
+            adapter = new MyFurnitureListItemRecyclerViewAdapter(context, this.furnitures, mListener);
             recyclerView.setAdapter(adapter);
         }
         return view;
