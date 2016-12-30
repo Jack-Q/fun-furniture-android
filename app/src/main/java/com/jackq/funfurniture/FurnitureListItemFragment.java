@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.gson.reflect.TypeToken;
+import com.jackq.funfurniture.API.APIServer;
 import com.jackq.funfurniture.model.Furniture;
 import com.jackq.funfurniture.model.MockFurnitureData;
 import com.koushikdutta.async.future.FutureCallback;
@@ -60,18 +61,20 @@ public class FurnitureListItemFragment extends Fragment {
             mCategoryName = mCategoryCode < stringArray.length ? stringArray[mCategoryCode] : ("New Category " + mCategoryCode);
 
             // After creating the item start loading image from the server
-            String host = "fun-furniture.azurewebsites.net";
-            host = "192.168.43.50:8080";
-            Ion.with(this).load("http://" + host+ "/api/list?cat=" + mCategoryCode).as(new TypeToken<List<Furniture>>() {
-            }).setCallback(new FutureCallback<List<Furniture>>() {
+            APIServer.getItemList(this.getContext(), mCategoryCode, new APIServer.APIServerCallback<List<Furniture>>() {
                 @Override
-                public void onCompleted(Exception e, List<Furniture> result) {
-                    Log.d(DEBUG_TAG, "Fetched result of list" + result.size());
-                    for (Furniture f : result) {
+                public void onResource(List<Furniture> resource) {
+                    for (Furniture f : resource) {
                         Log.d(DEBUG_TAG, "onCompleted: " + f.getName());
                         furnitures.add(f);
                     }
                     if(adapter != null)  adapter.notifyItemRangeInserted(0, furnitures.size());
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Log.e(DEBUG_TAG, "onCompleted: No data received");
+                    Log.e(DEBUG_TAG, e.toString());
                 }
             });
         }

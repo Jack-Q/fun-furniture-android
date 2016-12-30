@@ -22,7 +22,7 @@ public class Furniture implements Serializable {
     private List<String> pictures = new ArrayList<>();
 
     public Furniture() {
-        this.pictures = new ArrayList<>();
+
     }
 
     public Furniture(int id, String name, String description, int categoryCode, float price, String url, ArrayList<String> pictures) {
