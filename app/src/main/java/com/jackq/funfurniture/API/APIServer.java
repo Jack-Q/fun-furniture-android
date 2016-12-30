@@ -31,7 +31,8 @@ public class APIServer {
     }
 
     public static void getFullList(Context ctx, final APIServerCallback<List<Furniture>> callback) {
-        getResource(ctx, getFullListUrl(ctx), callback, new ArrayList<Furniture>());
+        Ion.with(ctx).load(getFullListUrl(ctx)).as(new TypeToken<List<Furniture>>() {
+        }).setCallback(getCallback(callback, new ArrayList<Furniture>()));
     }
 
     public static String getItemListUrl(Context ctx, int categoryCode) {
@@ -39,7 +40,8 @@ public class APIServer {
     }
 
     public static void getItemList(Context ctx, int categoryCode, final APIServerCallback<List<Furniture>> callback) {
-        getResource(ctx, getItemListUrl(ctx, categoryCode), callback, new ArrayList<Furniture>());
+        Ion.with(ctx).load(getItemListUrl(ctx, categoryCode)).as(new TypeToken<List<Furniture>>() {
+        }).setCallback(getCallback(callback, new ArrayList<Furniture>()));
     }
 
     public static String getItemDetailUrl(Context ctx, int itemId) {
@@ -47,7 +49,8 @@ public class APIServer {
     }
 
     public static void getItemDetail(Context ctx, int itemId, final APIServerCallback<FurnitureDetail> callback) {
-        getResource(ctx, getItemDetailUrl(ctx, itemId), callback);
+        Ion.with(ctx).load(getItemDetailUrl(ctx, itemId)).as(new TypeToken<FurnitureDetail>() {
+        }).setCallback(getCallback(callback));
     }
 
     public static String getItemModelUrl(Context ctx, int modelId) {
@@ -55,7 +58,8 @@ public class APIServer {
     }
 
     public static void getItemModel(Context ctx, int modelId, final APIServerCallback<FurnitureModel> callback) {
-        getResource(ctx, getItemDetailUrl(ctx, modelId), callback);
+        Ion.with(ctx).load(getItemModelUrl(ctx, modelId)).as(new TypeToken<FurnitureModel>() {
+        }).setCallback(getCallback(callback));
     }
 
 
@@ -65,13 +69,13 @@ public class APIServer {
         return mAPIHostName;
     }
 
-    private static <T> void getResource(Context ctx, String url, final APIServerCallback<T> callback) {
-        getResource(ctx, url, callback, null);
+
+    private static <T> FutureCallback<T> getCallback(final APIServerCallback<T> callback) {
+        return getCallback(callback, null);
     }
 
-    private static <T> void getResource(Context ctx, String url, final APIServerCallback<T> callback, final T emptyAlternation) {
-        Ion.with(ctx).load(url).as(new TypeToken<T>() {
-        }).setCallback(new FutureCallback<T>() {
+    private static <T> FutureCallback<T> getCallback(final APIServerCallback<T> callback, final T emptyAlternation) {
+        return new FutureCallback<T>() {
             @Override
             public void onCompleted(Exception e, T result) {
                 if (e != null) {
@@ -84,8 +88,6 @@ public class APIServer {
                 }
                 callback.onResource(result);
             }
-        });
+        };
     }
-
-
 }

@@ -69,4 +69,20 @@ public class FurnitureModel {
     public void setThumb(String thumb) {
         this.thumb = thumb;
     }
+
+    public String getFileNameMtl(){
+        return this.getId() + "-model.mtl";
+    }
+    public String getFileNameObj(){
+        return this.getId() + "-model.obj";
+    }
+    public String getFileNameShadow(){
+        return this.getId() + "-shadow.png";
+    }
+    public String getFileNameTexture(){
+        return this.getId() + "-texture.jpg";
+    }
+    public String getFileNameThumb(){
+        return this.getId() + "-thumb.jpg";
+    }
 }

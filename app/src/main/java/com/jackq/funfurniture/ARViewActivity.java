@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jackq.funfurniture.API.APIModelLoader;
 import com.jackq.funfurniture.API.APIServer;
 import com.jackq.funfurniture.AR.ARApplicationSession;
 import com.jackq.funfurniture.AR.AbstractARViewActivity;
@@ -193,7 +194,7 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
             @Override
             public void onResource(FurnitureModel resource) {
                 furnitureModel = resource;
-
+                loadModelFile();
             }
 
             @Override
@@ -201,6 +202,20 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
                 Log.e(TAG, "onError: error occurred while loading model", e);
             }
         });
+    }
+
+    private void loadModelFile(){
+        new APIModelLoader(this, furnitureModel, new APIModelLoader.LoaderCallback() {
+            @Override
+            public void handlerError(Exception e) {
+                Log.e(TAG, "handlerError: error occurred wil", e);
+            }
+
+            @Override
+            public void finish() {
+                Log.e(TAG, "finish: download files");
+            }
+        }).load();
     }
 
     void changeModel(){
