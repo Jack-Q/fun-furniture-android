@@ -17,6 +17,7 @@ import com.jackq.funfurniture.model.MockFurnitureData;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,11 +29,12 @@ import java.util.List;
 public class FurnitureListItemFragment extends Fragment {
     private static final String DEBUG_TAG = "FURNITURE_LIST";
     private static final String ARG_CATEGORY = "categoryCode";
+    MyFurnitureListItemRecyclerViewAdapter adapter = null;
     private int mColumnCount = 1;
     private int mCategoryCode = 1;
     private OnListFragmentInteractionListener mListener;
     private String mCategoryName;
-
+    private List<Furniture> furnitures = new ArrayList<>();
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -58,14 +60,16 @@ public class FurnitureListItemFragment extends Fragment {
             mCategoryName = mCategoryCode < stringArray.length ? stringArray[mCategoryCode] : ("New Category " + mCategoryCode);
 
             // After creating the item start loading image from the server
-            Ion.with(this).load("http://fun-furniture.azurewebsites.net/api/list?cat=2").as(new TypeToken<List<Furniture>>() {
+            Ion.with(this).load("http://fun-furniture.azurewebsites.net/api/list?cat=" + mCategoryCode).as(new TypeToken<List<Furniture>>() {
             }).setCallback(new FutureCallback<List<Furniture>>() {
                 @Override
                 public void onCompleted(Exception e, List<Furniture> result) {
                     Log.d(DEBUG_TAG, "Fetched result of list" + result.size());
                     for (Furniture f : result) {
                         Log.d(DEBUG_TAG, "onCompleted: " + f.getName());
+                        furnitures.add(f);
                     }
+                    if(adapter != null)  adapter.notifyItemRangeInserted(0, furnitures.size());
                 }
             });
         }
@@ -86,7 +90,8 @@ public class FurnitureListItemFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyFurnitureListItemRecyclerViewAdapter(MockFurnitureData.mockFurniture, mListener));
+            adapter = new MyFurnitureListItemRecyclerViewAdapter(this.furnitures, mListener);
+            recyclerView.setAdapter(adapter);
         }
         return view;
     }
