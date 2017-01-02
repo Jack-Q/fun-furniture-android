@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Host name and protocol of API server -->
-    <string name="APIHostName">http://192.168.43.50:8080/</string>
-    <!--<string name="APIHostName">http://192.168.31.200:8080/</string>-->
+    <!--<string name="APIHostName">http://192.168.43.50:8080/</string>-->
+    <string name="APIHostName">http://192.168.31.200:8080/</string>
     <!-- The server deployed on Azure -->
     <!--<string name="APIHostName">http://fun-furniture.azurewebsites.net/</string>-->
 
