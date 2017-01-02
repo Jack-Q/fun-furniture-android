@@ -45,5 +45,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.1.0'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.koushikdutta.ion:ion:2.1.9'
+    compile 'com.synnapps:carouselview:0.0.10'
     testCompile 'junit:junit:4.12'
 }

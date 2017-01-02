@@ -82,13 +82,7 @@
             android:id="@+id/ar_item_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:textColor="#aeda80"
-            android:textStyle="bold"
-            android:textSize="25dp"
-            android:text="$2400"
-            tools:ignore="SpUsage" />
+            style="@style/ApplicationTextViewPrice"/>
 
         <TextView
             android:id="@+id/ar_item_detail"
@@ -103,14 +97,8 @@
             android:id="@+id/ar_item_action"
             android:layout_width="180dp"
             android:layout_height="30dp"
-            android:layout_gravity="center_horizontal"
-            android:textAllCaps="true"
-            android:background="@drawable/action_btn"
-            android:textColor="#eee"
             android:width="180dp"
-            android:height="30dp"
-            android:layout_margin="20dp"
-            android:textAlignment="center"
+            style="@style/ApplicationButtonTheme"
             android:text="buy" />
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

@@ -8,10 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.jackq.funfurniture.API.APIServer;
 import com.jackq.funfurniture.model.Furniture;
 import com.jackq.funfurniture.model.FurnitureDetail;
+import com.koushikdutta.ion.Ion;
+import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ViewListener;
 
 public class ItemDetailActivity extends AppCompatActivity {
     private static final String TAG = "ITEM_DETAIL_ACTIVITY";
@@ -25,10 +29,6 @@ public class ItemDetailActivity extends AppCompatActivity {
         furniture = (Furniture) getIntent().getExtras().get("furniture");
 
         setContentView(R.layout.activity_item_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        setToolbarTitle(furniture.getName());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -37,6 +37,18 @@ public class ItemDetailActivity extends AppCompatActivity {
                 Intent intent = new Intent(ItemDetailActivity.this, ARViewActivity.class);
                 intent.putExtra("furniture", furniture);
                 startActivity(intent);
+            }
+        });
+
+        CarouselView carouselView = (CarouselView) this.findViewById(R.id.carouselView);
+        carouselView.setPageCount(furniture.getPictures().size());
+        carouselView.setViewListener(new ViewListener() {
+            @Override
+            public View setViewForPosition(int position) {
+                ImageView imageView = new ImageView(ItemDetailActivity.this);
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                Ion.with(imageView).placeholder(R.drawable.logo_wide).load(furniture.getPictures().get(position));
+                return imageView;
             }
         });
 
@@ -56,12 +68,6 @@ public class ItemDetailActivity extends AppCompatActivity {
                 Log.e(TAG, "onError: exception on loading data", e);
             }
         });
-    }
-
-
-    private void setToolbarTitle(String title){
-        CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
-        toolbarLayout.setTitle(title);
     }
 
     private void applyDetail(){

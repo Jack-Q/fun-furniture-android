@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -32,4 +32,24 @@
         <item name="android:immersive">true</item>
     </style>
 
+    <style name="ApplicationButtonTheme" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">center</item>
+        <item name="android:height">30dp</item>
+        <item name="android:background">@drawable/action_btn</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:textColor">#eee</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:minWidth">160dp</item>
+    </style>
+
+    <style name="ApplicationTextViewPrice" parent="Base.TextAppearance.AppCompat.Display2">
+        <item name="android:textSize" tools:ignore="SpUsage">25dp</item>
+        <item name="android:textColor" tools:ignore="SpUsage">#aeda80</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:textStyle" tools:ignore="SpUsage">bold</item>
+    </style>
 </resources>
