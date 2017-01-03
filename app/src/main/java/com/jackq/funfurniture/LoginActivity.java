@@ -1,5 +1,6 @@
 package com.jackq.funfurniture;
 
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 
 import com.google.gson.reflect.TypeToken;
+import com.jackq.funfurniture.user.User;
 import com.jackq.funfurniture.user.UserAuth;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -100,8 +102,15 @@ public class LoginActivity extends AppCompatActivity implements FutureCallback<U
      */
     @Override
     public void onCompleted(Exception e, UserAuth result) {
+        if(e != null){
+            Log.d(TAG, result.toString(), e);
+            Snackbar.make(this.webview, "Authentication Failed", Snackbar.LENGTH_LONG).setAction("OK", null).show();
+        }
+        User.setCurrentUser(new User(result));
         Log.d(TAG, result.toString());
         Snackbar.make(this.webview, "Authentication Success", Snackbar.LENGTH_LONG).setAction("OK", null).show();
-
+        Intent intent = new Intent(this, UserDetail.class);
+        startActivity(intent);
+        this.finish();
     }
 }

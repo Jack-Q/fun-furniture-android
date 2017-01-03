@@ -13,12 +13,14 @@
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <!--The following FrameLayout is the container of the AR canvas-->
         <FrameLayout
             android:id="@+id/ar_surface_view_container"
             android:layout_width="match_parent"
+            android:focusableInTouchMode="true"
             android:layout_height="match_parent">
 
         </FrameLayout>

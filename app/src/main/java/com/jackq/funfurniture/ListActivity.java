@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.jackq.funfurniture.model.Furniture;
+import com.jackq.funfurniture.user.User;
 
 public class ListActivity extends AppCompatActivity implements FurnitureListItemFragment.OnListFragmentInteractionListener{
 
@@ -56,8 +57,14 @@ public class ListActivity extends AppCompatActivity implements FurnitureListItem
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                User user = User.getUser(ListActivity.this);
+                if(user == null){
+                    // Redirect to user login page
+                    User.login(ListActivity.this, null);
+                }else{
+                    // Redirect to user detail
+                    User.viewDetail(ListActivity.this);
+                }
             }
         });
 

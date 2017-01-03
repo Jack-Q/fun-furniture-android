@@ -3,6 +3,7 @@ package com.jackq.funfurniture;
 import android.app.Activity;
 import android.graphics.Color;
 import android.opengl.Matrix;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
@@ -43,10 +44,65 @@ public class ARViewRenderer extends AbstractARViewRenderer {
 
     }
 
-    @Override
-    public void onTouchEvent(MotionEvent event) {
 
+    private float mLastTouchX;
+    private float mLastTouchY;
+    private float mRotation = 0;
+    private boolean mIsDown = false;
+
+    @Override
+    public void onTouchEvent(MotionEvent ev) {
+        Log.d(TAG, "Touch event!");
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN: {
+                mIsDown = true;
+                final float x = ev.getX();
+                final float y = ev.getY();
+
+                // Remember where we started (for dragging)
+                mLastTouchX = x;
+                mLastTouchY = y;
+                break;
+            }
+
+            case MotionEvent.ACTION_MOVE: {
+                if(mIsDown) {
+                    final float x = ev.getX();
+                    final float y = ev.getY();
+
+                    // Calculate the distance moved
+                    final float dx = x - mLastTouchX;
+                    final float dy = y - mLastTouchY;
+
+                    if(object3D != null){
+
+                        mRotation += dx / 10;
+
+                        object3D.setRotX(mRotation);
+                    }
+
+                    // Remember this touch position for the next move event
+                    mLastTouchX = x;
+                    mLastTouchY = y;
+                }
+
+
+                break;
+            }
+
+            case MotionEvent.ACTION_UP: {
+                mIsDown = false;
+                break;
+            }
+
+            case MotionEvent.ACTION_CANCEL: {
+                mIsDown = false;
+                break;
+            }
+
+        }
     }
+
 
     @Override
     public void onUpdateARViewScene(State state, float[] projectionMatrix) {

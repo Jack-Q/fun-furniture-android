@@ -22,6 +22,8 @@ import com.vuforia.Vuforia;
 
 import org.rajawali3d.view.SurfaceView;
 
+import java.util.ArrayList;
+
 public abstract class AbstractARViewActivity<Renderer extends AbstractARViewRenderer> extends AppCompatActivity implements IARActivityControl {
     private static final String TAG = "AbstractARViewActivity";
 
@@ -222,6 +224,7 @@ public abstract class AbstractARViewActivity<Renderer extends AbstractARViewRend
         ViewGroup layout = getARViewContainer();
         arSurfaceView = new SurfaceView(this);
 
+
         renderer = createRenderer(arApplicationSession);
         renderer.setActive(true);
 
@@ -241,6 +244,10 @@ public abstract class AbstractARViewActivity<Renderer extends AbstractARViewRend
 
         layout.addView(arSurfaceView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
+
+        ArrayList<View> views = new ArrayList<>();
+        views.add(arSurfaceView);
+        layout.addTouchables(views);
 
         try {
             arApplicationSession.startAR(CameraDevice.CAMERA_DIRECTION.CAMERA_DIRECTION_DEFAULT);
