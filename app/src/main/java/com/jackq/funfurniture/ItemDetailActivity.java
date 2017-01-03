@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.jackq.funfurniture.API.APIServer;
 import com.jackq.funfurniture.model.Furniture;
@@ -16,6 +17,10 @@ import com.jackq.funfurniture.model.FurnitureDetail;
 import com.koushikdutta.ion.Ion;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ViewListener;
+
+import org.w3c.dom.Text;
+
+import java.util.Locale;
 
 public class ItemDetailActivity extends AppCompatActivity {
     private static final String TAG = "ITEM_DETAIL_ACTIVITY";
@@ -51,6 +56,13 @@ public class ItemDetailActivity extends AppCompatActivity {
                 return imageView;
             }
         });
+
+        TextView priceTextView = (TextView) findViewById(R.id.ar_item_price);
+        priceTextView.setText(String.format(Locale.ENGLISH, "NT$ %.2f", furniture.getPrice() * 5));
+
+        TextView titleTextView = (TextView) findViewById(R.id.text_title);
+        titleTextView.setText(furniture.getName());
+
 
         loadDetail();
     }

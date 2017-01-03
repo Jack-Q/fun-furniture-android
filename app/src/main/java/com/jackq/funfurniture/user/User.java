@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.jackq.funfurniture.ListActivity;
 import com.jackq.funfurniture.LoginActivity;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 
 public class User {
+    static final String TAG = "TAG_USER";
     private static User currentUser = null;
     private boolean valid = false;
     private String username;
@@ -26,8 +28,11 @@ public class User {
     }
 
     public User(UserAuth auth){
+        Log.d(TAG, auth.getName());
         username = auth.getName();
+        Log.d(TAG, auth.getPicture());
         picture = auth.getPicture();
+        Log.d(TAG, auth.getToken());
         token = auth.getToken();
         valid = true;
     }

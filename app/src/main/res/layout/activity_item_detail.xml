@@ -61,26 +61,30 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="AR" />
+                android:text="Favorite" />
 
             <Button
                 style="@style/ApplicationButtonTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="3D" />
+                android:text="Same brand ..." />
         </LinearLayout>
 
         <TextView
             android:id="@+id/text_detail_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Header" />
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:padding="20dp"
+            android:text="Description" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:text="Detailed Description" />
 
         <Button
@@ -101,7 +105,7 @@
         android:paddingBottom="10dp"
         android:lines="1"
         android:overScrollMode="ifContentScrolls"
-
+        android:id="@+id/text_title"
         android:text="Test Furniture"
         android:textColor="#ffe3f4dd"
         android:background="#a0101410"
