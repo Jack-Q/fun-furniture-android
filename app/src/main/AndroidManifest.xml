@@ -44,7 +44,7 @@
             android:label="@string/title_activity_item_detail"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".UserDetail"></activity>
+        <activity android:name=".UserDetailActivity"></activity>
     </application>
 
 </manifest>

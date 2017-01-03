@@ -4,14 +4,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jackq.funfurniture.user.User;
 import com.koushikdutta.ion.Ion;
 
-public class UserDetail extends AppCompatActivity {
+public class UserDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +18,9 @@ public class UserDetail extends AppCompatActivity {
         setContentView(R.layout.activity_user_detail);
 
         User user = User.getUser(this);
+        if(user == null){
+            finish();
+        }
         TextView nameTextView = (TextView) findViewById(R.id.user_name);
         nameTextView.setText(user.getUsername() != null ? user.getUsername() : "Please login");
 
@@ -30,7 +32,7 @@ public class UserDetail extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 User.setCurrentUser(null);
-                UserDetail.this.finish();
+                UserDetailActivity.this.finish();
             }
         });
     }

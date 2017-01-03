@@ -6,9 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -18,8 +15,6 @@ import com.jackq.funfurniture.user.User;
 import com.jackq.funfurniture.user.UserAuth;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-
-import org.rajawali3d.loader.SceneModel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -109,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements FutureCallback<U
         User.setCurrentUser(new User(result));
         Log.d(TAG, result.toString());
         Snackbar.make(this.webview, "Authentication Success", Snackbar.LENGTH_LONG).setAction("OK", null).show();
-        Intent intent = new Intent(this, UserDetail.class);
+        Intent intent = new Intent(this, UserDetailActivity.class);
         startActivity(intent);
         this.finish();
     }
