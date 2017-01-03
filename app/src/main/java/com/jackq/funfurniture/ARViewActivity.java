@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.transition.Scene;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -14,7 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jackq.funfurniture.API.APIModelLoader;
@@ -27,10 +26,8 @@ import com.jackq.funfurniture.model.FurnitureModel;
 import org.rajawali3d.Object3D;
 import org.rajawali3d.loader.ALoader;
 import org.rajawali3d.loader.LoaderOBJ;
-import org.rajawali3d.loader.SceneModel;
 import org.rajawali3d.loader.SceneModelLoader;
 import org.rajawali3d.loader.async.IAsyncLoaderCallback;
-import org.rajawali3d.util.RajLog;
 
 import java.io.File;
 import java.util.Locale;
@@ -38,6 +35,7 @@ import java.util.Locale;
 
 public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
     private static final String TAG = "ARViewActivity";
+    private LinearLayout loadingLayout = null;
     private Furniture furniture;
     private FurnitureModel furnitureModel;
     private View contentView;
@@ -63,7 +61,7 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
                 ViewGroup.LayoutParams.MATCH_PARENT));
         enableFullScreen();
 
-
+        this.loadingLayout = (LinearLayout) findViewById(R.id.loading_overlay);
         final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.activity_ar_view);
         drawerLayout.setScrimColor(0x00000000);
         drawerLayout.setClipToPadding(false);
@@ -146,7 +144,7 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
     @Override
     public void initApplicationARScene() {
         initFinish = true;
-        if(modelFile == null) return;
+        if (modelFile == null) return;
 
         final SceneModelLoader loader = new SceneModelLoader(getRenderer(), modelFile);
         getRenderer().loadModel(loader, new IAsyncLoaderCallback() {
@@ -155,8 +153,12 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
 
                 Log.d(TAG, "Model load complete: " + loader);
                 final LoaderOBJ obj = (LoaderOBJ) loader;
+
                 modelObject = obj.getParsedObject();
-                    getRenderer().setCurrentObject(modelObject);
+
+                getRenderer().setCurrentObject(modelObject);
+
+                loadingLayout.setVisibility(View.GONE);
             }
 
             @Override
@@ -171,7 +173,7 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
         return (ViewGroup) findViewById(R.id.ar_surface_view_container);
     }
 
-    private void loadModel(){
+    private void loadModel() {
         APIServer.getItemModel(this, furniture.getId(), new APIServer.APIServerCallback<FurnitureModel>() {
             @Override
             public void onResource(FurnitureModel resource) {
@@ -186,7 +188,7 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
         });
     }
 
-    private void loadModelFile(){
+    private void loadModelFile() {
         new APIModelLoader(this, furnitureModel, new APIModelLoader.LoaderCallback() {
             @Override
             public void handlerError(Exception e) {
@@ -197,7 +199,7 @@ public class ARViewActivity extends AbstractARViewActivity<ARViewRenderer> {
             public void finish(File model) {
                 Log.e(TAG, "finish: download files");
                 modelFile = model;
-                if(initFinish)
+                if (initFinish)
                     initApplicationARScene();
             }
         }).load();
